@@ -1,0 +1,22 @@
+#sequence {
+    display: none;
+    color: white;
+}
+
+#key {
+    font-size: 48px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#feedback {
+    font-size: 36px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#score {
+    font-size: 36px;
+    margin-top: 10px;
+    text-align: center;
+}

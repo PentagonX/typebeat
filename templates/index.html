@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TypeBeat</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<canvas id="fallingLetters"></canvas>
+
+<div id="container">
+  <div id="left">
+    <h1 style="font-size: 150px;">TYPEBEAT</h1>
+    <div>
+        <button onclick="location.href='/solo'">Play Solo</button>
+        <button onclick="location.href='/settings'">Settings</button>
+        <button onclick="alert('Multiplayer coming soon!')">Play Multiplayer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("fallingLetters");
+const ctx = canvas.getContext("2d");
+
+// Fullscreen canvas
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Recalculate on resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const fontSize = 24;
+const fallingLetters = [];
+
+function createLetter() {
+    return {
+        x: Math.random() * canvas.width,
+        y: -fontSize,
+        char: letters.charAt(Math.floor(Math.random() * letters.length)),
+        speed: 1 + Math.random() * 3
+    };
+}
+
+// Start with some letters
+for (let i = 0; i < 30; i++) {
+    fallingLetters.push(createLetter());
+}
+
+function draw() {
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = fontSize + "px monospace";
+
+    fallingLetters.forEach(letter => {
+        ctx.fillText(letter.char, letter.x, letter.y);
+        letter.y += letter.speed;
+        if (letter.y > canvas.height) {
+            // reset to top
+            letter.x = Math.random() * canvas.width;
+            letter.y = -fontSize;
+            letter.char = letters.charAt(Math.floor(Math.random() * letters.length));
+            letter.speed = 1 + Math.random() * 3;
+        }
+    });
+}
+
+setInterval(draw, 60);
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TypeBeat Solo</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+</head>
+<body>
+
+<div id="sequence"></div>
+<div id="key">PRESS ENTER</div>
+<div id="feedback"></div>
+<div id="score">Score: 0</div>
+
+<script src="{{ url_for('static', filename='game.js') }}"></script>
+<script>
+initGame({ seedInput: prompt("Enter seed (number or leave blank for random):"), deterministic: true });
+</script>
+</body>
+</html>
