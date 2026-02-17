@@ -5,17 +5,65 @@
 <title>TypeBeat Solo</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+<style>
+    /* Override game.css for the neon look and canvas layering */
+    #game-ui {
+        background: transparent !important;
+        border-top: none !important; /* We will draw the neon line on canvas */
+        pointer-events: none; /* Let clicks pass through if needed */
+    }
+    #game-ui > div {
+        pointer-events: auto;
+    }
+    #setup-form {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        background: rgba(0,0,0,0.8);
+        padding: 40px;
+        border: 2px solid #00ff88;
+        border-radius: 10px;
+        z-index: 100;
+    }
+    input { padding: 10px; width: 300px; font-size: 16px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #00ff88; border: none; color: #000; font-weight: bold; }
+    #audio-player { display: none; }
+</style>
 </head>
 <body>
 
-<div id="sequence"></div>
-<div id="key">PRESS ENTER</div>
-<div id="feedback"></div>
-<div id="score">Score: 0</div>
+<canvas id="fallingLetters"></canvas>
+
+{% if not audio_file %}
+<div id="setup-form">
+    <h1 style="color: #fff; margin-bottom: 20px;">Enter YouTube URL</h1>
+    <form method="POST">
+        <input name="url" placeholder="https://www.youtube.com/watch?v=..." required>
+        <button type="submit">Start Game</button>
+    </form>
+</div>
+{% else %}
+
+<audio id="audio-player" src="/audio/{{ audio_file }}" preload="auto"></audio>
+
+<div id="game-ui">
+    <div id="sequence"></div>
+    <div id="key">WAIT FOR BEAT...</div>
+    <div id="feedback"></div>
+    <div id="score">Score: 0</div>
+</div>
+
+<script>
+    // Pass Python data to JS
+    window.GAME_CONFIG = {
+        beatTimes: {{ beat_times | tojson }},
+        tempo: {{ tempo }},
+        audioFile: "{{ audio_file }}"
+    };
+</script>
+{% endif %}
 
 <script src="{{ url_for('static', filename='game.js') }}"></script>
-<script>
-initGame({ seedInput: prompt("Enter seed (number or leave blank for random):"), deterministic: true });
-</script>
 </body>
 </html>

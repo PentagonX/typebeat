@@ -43,7 +43,7 @@ function createLetter() {
         x: Math.random() * canvas.width,
         y: -fontSize,
         char: letters.charAt(Math.floor(Math.random() * letters.length)),
-        speed: 1 + Math.random() * 3
+        speed: (1 + Math.random() * 3) * 0.35 // Adjusted for 60FPS
     };
 }
 
@@ -68,12 +68,14 @@ function draw() {
             letter.x = Math.random() * canvas.width;
             letter.y = -fontSize;
             letter.char = letters.charAt(Math.floor(Math.random() * letters.length));
-            letter.speed = 1 + Math.random() * 3;
+            letter.speed = (1 + Math.random() * 3) * 0.35;
         }
     });
+
+    requestAnimationFrame(draw);
 }
 
-setInterval(draw, 60);
+draw();
 </script>
 </body>
 </html>
